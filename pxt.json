@@ -1,49 +1,25 @@
 {
-    "name": "maqueen",
-    "version": "1.7.17",
-    "description": "Affordable mini robot designed by DFRobot",
+    "name": "maqueen-v4v5-compat",
+    "version": "0.0.1",
+    "description": "Maqueen v4-style basic blocks for Maqueen v4 and v5",
     "license": "MIT",
     "dependencies": {
-        "core": "*",
-        "ir": "github:dfrobot/pxt-dfrobot_newir#v0.0.4"
+        "core": "*"
     },
     "files": [
         "maqueen.ts",
-        "enums.d.ts",
-        "_locales/zh-cn/maqueen-strings.json",
-        "_locales/zh-tw/maqueen-strings.json",
-        "_locales/pt/maqueen-strings.json",
-        "_locales/fr/maqueen-strings.json",
-        "_locales/es/maqueen-strings.json",
-        "_locales/nb/maqueen-strings.json",
-        "_locales/cs/maqueen-strings.json",
-        "_locales/pl/maqueen-strings.json",
-        "shims.d.ts",
+        "legacy.ts",
         "README.md",
-        "_locales/ru/maqueen-strings.json",
-        "_locales/ru/maqueen-jsdoc-strings.json",
-        "_locales/ja/maqueen-strings.json",
-        "_locales/ja/maqueen-jsdoc-strings.json",
-        "_locales/zh-cn/maqueen-jsdoc-strings.json",
-        "_locales/zh-tw/maqueen-jsdoc-strings.json",
-        "_locales/pt/maqueen-jsdoc-strings.json",
-        "_locales/fr/maqueen-jsdoc-strings.json",
-        "_locales/es/maqueen-jsdoc-strings.json",
-        "_locales/nb/maqueen-jsdoc-strings.json",
-        "_locales/cs/maqueen-jsdoc-strings.json",
-        "_locales/pl/maqueen-jsdoc-strings.json",
-        "_locales/ko/maqueen-strings.json",
-        "_locales/ko/maqueen-jsdoc-strings.json",
-        "_locales/zh-CN/README.md"
+        "_locales/ja/maqueen-v4v5-compat-jsdoc-strings.json",
+        "_locales/ja/maqueen-v4v5-compat-strings.json"
     ],
+    "fileDependencies": {
+        "legacy.ts": "!maqueen"
+    },
     "testFiles": [
         "test.ts"
     ],
     "public": true,
-    "targetVersions": {
-        "target": "8.0.22",
-        "targetId": "microbit"
-    },
     "supportedTargets": [
         "microbit"
     ],

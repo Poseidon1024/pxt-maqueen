@@ -1,67 +1,73 @@
- 
-# Maqueen
+# Maqueen v4/v5 Compat
 
-[Maqueen is an easy-to-use programming educational Robot](https://www.dfrobot.com.cn/goods-1802.html)
+Maqueen v4 向けの基本的な MakeCode API を、Maqueen v4 と Maqueen v5 の両方で使いやすくするための micro:bit MakeCode 互換拡張機能です。
 
-## Basic usage
+この拡張機能は、公式 Maqueen 拡張とは別の `maqueenCompat` 名前空間を使います。公式 Maqueen 拡張を同じプロジェクトへ追加しても、TypeScript 上の `maqueen` 名前空間とは衝突しません。
 
-* Set the direction and speed of Maqueen motor
+## 使い方
 
-```blocks
- maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 120)
- maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CCW, 120)
+MakeCode の「拡張機能」で、この GitHub リポジトリの URL を指定して追加します。
+
+```text
+https://github.com/Poseidon1024/pxt-maqueen
 ```
 
-* Read ultrasonic sensor
+プログラムの最初で Maqueen を準備します。
 
 ```blocks
-basic.showNumber(maqueen.Ultrasonic(PingUnit.Centimeters))
+maqueenCompat.init(maqueenCompat.BoardVersion.Auto)
 ```
 
-* Set the  Maqueen servos 
+通常は `Auto` で動作します。Maqueen v5 のラインセンサー値が変わらない場合は、ボード種別を明示してください。
 
 ```blocks
-maqueen.servoRun(maqueen.Servos.S1, 90)
+maqueenCompat.init(maqueenCompat.BoardVersion.V5)
 ```
 
-* Stop the Maqueen motor 
+## ラインセンサー
+
+`maqueenCompat.readPatrol(...)` は、Maqueen v4 と Maqueen v5 のどちらでも v4 と同じ値にそろえて返します。
+
+* `0`: 黒
+* `1`: 白
+
+Maqueen v5 では、左センサーと右センサーを v4 の左右センサーとして扱います。中央センサーはこの互換 API では使いません。
+
+## 主な API
 
 ```blocks
-maqueen.motorStop(maqueen.Motors.M1)
+maqueenCompat.init(maqueenCompat.BoardVersion.Auto)
+maqueenCompat.motorRun(maqueenCompat.Motors.All, maqueenCompat.Dir.CW, 80)
+maqueenCompat.motorStop(maqueenCompat.Motors.All)
+maqueenCompat.readPatrol(maqueenCompat.Patrol.PatrolLeft)
+maqueenCompat.Ultrasonic()
+maqueenCompat.servoRun(maqueenCompat.Servos.S1, 90)
+maqueenCompat.writeLED(maqueenCompat.LED.LEDLeft, maqueenCompat.LEDswitch.turnOn)
 ```
 
-* Read line tracking sensor
+## 例
 
 ```blocks
-serial.writeNumber(maqueen.readPatrol(maqueen.Patrol.PatrolLeft))
+maqueenCompat.init(maqueenCompat.BoardVersion.Auto)
+
+basic.forever(function () {
+    let left = maqueenCompat.readPatrol(maqueenCompat.Patrol.PatrolLeft)
+    let right = maqueenCompat.readPatrol(maqueenCompat.Patrol.PatrolRight)
+
+    if (left == 0 && right == 0) {
+        maqueenCompat.motorRun(maqueenCompat.Motors.All, maqueenCompat.Dir.CW, 80)
+    } else if (left == 0) {
+        maqueenCompat.motorRun(maqueenCompat.Motors.M1, maqueenCompat.Dir.CW, 30)
+        maqueenCompat.motorRun(maqueenCompat.Motors.M2, maqueenCompat.Dir.CW, 90)
+    } else if (right == 0) {
+        maqueenCompat.motorRun(maqueenCompat.Motors.M1, maqueenCompat.Dir.CW, 90)
+        maqueenCompat.motorRun(maqueenCompat.Motors.M2, maqueenCompat.Dir.CW, 30)
+    } else {
+        maqueenCompat.motorStop(maqueenCompat.Motors.All)
+    }
+})
 ```
 
-* Turn on/off the LEDs
+## 対応範囲
 
-```blocks
-maqueen.writeLED(maqueen.LED.LEDLeft, maqueen.LEDswitch.turnOn)
-```
-
-* Read IR sensor value
-
-```blocks
-basic.showNumber(maqueen.IR_read())
-```
-
-* Read the version number
-
-```blocks
-basic.showString(maqueen.IR_read_version())
-```
-
-## License
-
-MIT
-
-Copyright (c) 2018, microbit/micropython Chinese community  
-
-
-## Supported targets
-
-* for PXT/microbit
-(The metadata above is needed for package search.)
+この拡張機能は、Maqueen v4 の基本 API を Maqueen v5 でも使うための互換レイヤーです。モーター、ラインセンサー、超音波センサー、サーボ、LED ON/OFF などの v4 基本機能を対象にしています。Maqueen v5 固有の RGB 色指定、中央ラインセンサー、自動巡回、BLE などの機能をすべて提供するものではありません。
